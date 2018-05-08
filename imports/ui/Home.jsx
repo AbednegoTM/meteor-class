@@ -3,6 +3,7 @@ import {withTracker} from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import route from '/imports/routing/router.js';
 import Posts from '../api/blog/collections.js';
+import MainHeader from './Header.jsx'
 
  class Home extends Component{
     constructor(props){
@@ -57,6 +58,7 @@ import Posts from '../api/blog/collections.js';
     render(){
         return(
             <div>
+                <MainHeader home = "active"/>
                 <h2>Our Home page</h2>
                 <button onClick = {this.goToContacts}>Contact Us</button>
                 <button onClick = {this.goToAbout}>About Us</button>
@@ -85,6 +87,7 @@ import Posts from '../api/blog/collections.js';
 }
 
 export default withTracker(() => {
+   Meteor.subscribe('posts');
     return {
         hkPosts : Posts.find().fetch(),
     };

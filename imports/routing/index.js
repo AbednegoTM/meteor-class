@@ -4,7 +4,7 @@ import ContactUs from '/imports/ui/ContactUs.jsx';
 import AboutUs from '/imports/ui/AboutUs.jsx';
 
 route('/', Home);
-route('/contact/:_id',ContactUs,{},{
+route('/contact',ContactUs,{},{
     name : 'contacts'
 });
 route('/about',AboutUs);

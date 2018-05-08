@@ -3,6 +3,7 @@ import moment from 'moment';
 //imports from api
 import '/imports/api/methods.js';
 import '/imports/api/blog/methods.js';
+import '/imports/api/blog/server/publications.js'
 
 
 
