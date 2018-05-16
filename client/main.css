@@ -3,3 +3,17 @@
 .active{
     background: #dddd;
 }
+
+.mContainer{
+    padding: 1%;
+}
+
+.imagesContainer{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.imgItem{
+    margin: 50px;
+}

@@ -3,17 +3,49 @@ import {withTracker} from 'meteor/react-meteor-data';
 import { Meteor } from 'meteor/meteor';
 import route from '/imports/routing/router.js';
 import Posts from '../api/blog/collections.js';
-import MainHeader from './Header.jsx'
+import {UserFiles} from '../api/upload/collections.js';
+import MainHeader from './Header.jsx';
+import FileUploadComponent from './upload.jsx';
+
+import { Session } from 'meteor/session';
 
  class Home extends Component{
     constructor(props){
         super(props);
         this.state = {
             desc : 'value is',
-            title : 'default Title',
+            title : 'Session Title',
             imgPath : '/imag.png'
         }
     }
+    showImages(){
+        const mFiles = this.props.files;
+
+        return mFiles.map((file) => {
+            const link = UserFiles.findOne({_id:file._id}).link();
+            return ( 
+            <div key ={file._id}>
+                <p>{file.name}</p>
+                <img src={link} height="200" width="200"></img>
+            </div>
+            )
+        }
+    );  
+    }
+
+    UNSAFE_componentWillMount(){
+        Session.set('initialSession',this.state.title); 
+        Session.set('updating',this.state.title);
+    }
+
+    // componentDidMount(){
+    //     Session.set('blogTitle',this.state.title); 
+    // }
+
+    componentDidUpdate(){
+        Session.set('updating',this.state.title); 
+    }
+
 
     handleTitleChange = (e) => {
         this.setState(
@@ -52,6 +84,7 @@ import MainHeader from './Header.jsx'
             title: this.state.title,
             desc : this.state.desc
         }
+
         Meteor.call('posts.create',post);
         e.preventDefault();
     }
@@ -59,6 +92,7 @@ import MainHeader from './Header.jsx'
         return(
             <div>
                 <MainHeader home = "active"/>
+                <FileUploadComponent fileName = {this.state.title}/>
                 <h2>Our Home page</h2>
                 <button onClick = {this.goToContacts}>Contact Us</button>
                 <button onClick = {this.goToAbout}>About Us</button>
@@ -80,7 +114,10 @@ import MainHeader from './Header.jsx'
                     <br/>
                     <input type="submit" value="post" />
                 </form>
-                {this.getAllPosts()}
+                {/* {this.getAllPosts()} */}
+                <div className="imagesContainer" >
+                    {this.showImages()}                        
+                </div>
         </div>
         )
     }
@@ -88,7 +125,9 @@ import MainHeader from './Header.jsx'
 
 export default withTracker(() => {
    Meteor.subscribe('posts');
+   Meteor.subscribe('files.all');
     return {
         hkPosts : Posts.find().fetch(),
+        files : UserFiles.find({}, {sort: {name: 1}}).fetch(),
     };
 })(Home);

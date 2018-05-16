@@ -4,6 +4,9 @@ import moment from 'moment';
 import '/imports/api/methods.js';
 import '/imports/api/blog/methods.js';
 import '/imports/api/blog/server/publications.js'
+import '/imports/api/users/methods.js';
+import '/imports/api/upload/collections.js';
+import '/imports/api/upload/server/publications.js'
 
 
 
